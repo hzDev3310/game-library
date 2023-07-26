@@ -1,10 +1,10 @@
 import { Card, CardBody, Skeleton, SkeletonText } from '@chakra-ui/react'
-import React from 'react'
+
 
 const GameLoading = () => {
   return (
-    <Card width={500} borderRadius={20} overflow={"hidden"}>
-        <Skeleton height={500}  ></Skeleton >
+    <Card width={360} borderRadius={20} overflow={"hidden"}>
+        <Skeleton height={300}  ></Skeleton >
         <CardBody>
             <SkeletonText></SkeletonText>
         </CardBody>

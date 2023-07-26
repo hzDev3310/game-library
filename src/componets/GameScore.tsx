@@ -13,7 +13,7 @@ const GameScore = ({ score }: Props) => {
     if (score > 50) {
       setColor("green.300");
     } else {
-      setColor("yellow.300");
+      setColor("red");
     }
   }, [score]);
 
