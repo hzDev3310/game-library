@@ -6,7 +6,8 @@ interface schema<T> {
   count: number;
   results: T[];
 }
-const useData = <T>(endpoint: string) => {
+
+const useData = <T>(endpoint: string ) => {
   const [data, setData] = useState<T[]>([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ const useData = <T>(endpoint: string) => {
     const controller = new AbortController();
     setLoading(true);
     apiClient
-      .get<schema<T>>(endpoint)
+      .get<schema<T>>(endpoint,{signal :controller.signal })
       .then((res) => {
         setData(res.data.results);
         setLoading(false);
@@ -27,7 +28,7 @@ const useData = <T>(endpoint: string) => {
         setLoading(false);
       });
     return () => controller.abort();
-  }, [endpoint]);
+  },[endpoint]);
   return { data, err, loading };
 };
 export default useData;

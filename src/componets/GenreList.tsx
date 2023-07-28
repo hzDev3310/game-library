@@ -7,16 +7,12 @@ import {
   ListItem,
   Spinner,
 } from "@chakra-ui/react";
-import useGenre from "../hooks/useGenre";
+import useGenre, { Genre } from "../hooks/useGenre";
 import { FaHome } from "react-icons/fa";
 interface Props {
-  genre: (selected: string) => void;
+  genre: (selected: Genre |null) => void;
 }
-export interface Genre {
-  id: number;
-  name: string;
-  image_background: string;
-}
+
 const GenreList = ({ genre }: Props) => {
   const { data, loading } = useGenre();
   if (loading) return <Spinner padding={20} />;
@@ -32,11 +28,10 @@ const GenreList = ({ genre }: Props) => {
           boxSize={8}
           borderRadius={10}
           fontWeight={"bold"}
-          
         >
           <Icon boxSize={5} as={FaHome} />
         </Badge>
-        <Button variant={"link"} fontSize={"lg"} onClick={() => genre("")}>
+        <Button variant={"link"} fontSize={"lg"} onClick={() => genre(null)}>
           All
         </Button>
       </ListItem>
@@ -51,7 +46,9 @@ const GenreList = ({ genre }: Props) => {
           <Button
             variant={"link"}
             fontSize={"lg"}
-            onClick={() => genre(genreItem.name)}
+            onClick={() => {
+              genre(genreItem);
+            }}
           >
             {genreItem.name}
           </Button>

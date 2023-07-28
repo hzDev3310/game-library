@@ -2,31 +2,35 @@ import { SimpleGrid } from "@chakra-ui/react";
 import useGame from "../hooks/useGames";
 import GameCard from "./GameCard";
 import GameLoading from "./GameLoading";
+import { Genre } from "../hooks/useGenre";
+import { Platform } from "../hooks/usePlatforms";
 
 interface Props {
-  selectedGenre: string;
+  selectedGenre: Genre | null;
+  selectedPlatform: Platform | null;
+  selectedOrder: string | null;
 }
 
-const GameGrid = ({ selectedGenre }: Props) => {
-  const { data, err, loading } = useGame();
+const GameGrid = ({
+  selectedGenre,
+  selectedPlatform,
+  selectedOrder,
+}: Props) => {
+  const { data, err, loading } = useGame(
+    selectedGenre,
+    selectedPlatform,
+    selectedOrder
+  );
   const ske = [1, 2, 3, 4, 5, 6];
-
-  // Filter the data by the selected genre if it's not empty, otherwise return all data
-  const filteredData = selectedGenre
-    ? data.filter((game) =>
-        game.genres.some((genre) => genre.name === selectedGenre)
-      )
-    : data;
 
   return (
     <>
       {err && <p>{err}</p>}
 
-      <SimpleGrid columns={{ sm: 1, lg: 2, xl: 3 }} spacing={10} padding={10}>
-        {loading &&
-          ske.map((i) => <GameLoading key={i}></GameLoading>)}
+      <SimpleGrid columns={{ sm: 1, lg: 2, xl: 3 }} spacing={10} paddingTop={5}>
+        {loading && ske.map((i) => <GameLoading key={i}></GameLoading>)}
 
-        {filteredData.map((game) => (
+        {data.map((game) => (
           <GameCard key={game.id} game={game} />
         ))}
       </SimpleGrid>
