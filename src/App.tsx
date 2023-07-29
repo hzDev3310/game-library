@@ -16,6 +16,7 @@ const App = () => {
     null
   );
   const [selectedOrder, setSelectedOrder] = useState<null | string>(null);
+  const [searchedValue, setSearched] = useState<string>('');
   return (
     <Grid
       templateAreas={{
@@ -28,7 +29,7 @@ const App = () => {
       }}
     >
       <GridItem area="nav">
-        <Navbar />
+        <Navbar  searchValue={(e)=>setSearched(e)}/>
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingTop={8}>
@@ -45,6 +46,7 @@ const App = () => {
           selectedGenre={selectedGenre}
           selectedPlatform={selectedPlatform}
           selectedOrder={selectedOrder}
+          searchedValue={searchedValue}
         />
       </GridItem>
     </Grid>

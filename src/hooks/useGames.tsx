@@ -19,7 +19,8 @@ export interface Game {
 const useGame = (
   selectedGenre: Genre | null,
   selectedPlatform: Platform | null,
-  sortBy: string | null
+  sortBy: string | null,
+  searchedValue: string
 ) => {
   const { data, err, loading } = useData<Game>("/games");
 
@@ -68,8 +69,11 @@ const useGame = (
 
   // Sort the filtered data based on the selected sort property
   const sortedData = sortData(filteredByPlatform, sortBy);
-
-  return { data: sortedData, err, loading };
+  const searchedData = data.filter((game) => {
+    return game.name.toLowerCase().includes(searchedValue.toLowerCase());
+  });
+  const finalData = searchedData.length === data.length ? sortedData : searchedData;
+  return { data :finalData, err, loading };
 };
 
 export default useGame;
