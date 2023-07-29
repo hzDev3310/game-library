@@ -1,6 +1,8 @@
-import useData from "./useDate";
+import { GameQuery } from "../App";
 import { Genre } from "./useGenre";
 import { Platform } from "./usePlatforms";
+
+import useData from "./useDate";
 
 export interface Game {
   released: string | number | Date;
@@ -8,6 +10,7 @@ export interface Game {
   created: string | number | Date;
   updated: string | number | Date;
   rating: number;
+  rating_top :number; 
   id: number;
   name: string;
   background_image: string;
@@ -16,29 +19,31 @@ export interface Game {
   genres: Genre[];
 }
 
-const useGame = (
-  selectedGenre: Genre | null,
-  selectedPlatform: Platform | null,
-  sortBy: string | null,
-  searchedValue: string
-) => {
+const useGame = (gameQuery: GameQuery) => {
   const { data, err, loading } = useData<Game>("/games");
 
   // Filter the data based on the selectedGenre
-  const filteredByGenre = selectedGenre
+  const filteredByGenre = gameQuery.genre
     ? data.filter((game) =>
-        game.genres.some((genre) => genre.id === selectedGenre.id)
+        game.genres.some((genre) => genre.id === gameQuery.genre?.id)
       )
     : data;
 
   // Filter the data further based on the selectedPlatform
-  const filteredByPlatform = selectedPlatform
+  const filteredByPlatform = gameQuery.platfrom
     ? filteredByGenre.filter((game) =>
         game.parent_platforms.some(
-          (platformData) => platformData.platform.id === selectedPlatform.id
+          (platformData) => platformData.platform.id === gameQuery.platfrom?.id
         )
       )
     : filteredByGenre;
+
+  //search for data
+  const searchedData = data.filter((game) => {
+    return game.name
+      .toLowerCase()
+      .includes(gameQuery.searchValue?.toLowerCase());
+  });
 
   const sortData = (dataArray: Game[], sortBy: string | null) => {
     if (!sortBy) return dataArray;
@@ -68,12 +73,10 @@ const useGame = (
   };
 
   // Sort the filtered data based on the selected sort property
-  const sortedData = sortData(filteredByPlatform, sortBy);
-  const searchedData = data.filter((game) => {
-    return game.name.toLowerCase().includes(searchedValue.toLowerCase());
-  });
-  const finalData = searchedData.length === data.length ? sortedData : searchedData;
-  return { data :finalData, err, loading };
+  const sortedData = sortData(filteredByPlatform, gameQuery.order);
+
+  const finalData = searchedData.length === 0 ? sortedData : searchedData;
+  return { data: finalData, err, loading };
 };
 
 export default useGame;

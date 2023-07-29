@@ -5,49 +5,45 @@ import Navbar from "./componets/Navbar";
 import GameGrid from "./componets/GameGrid";
 import GenreList from "./componets/GenreList";
 import PlatformsList from "./componets/PlatformsList";
+import OrderList from "./componets/OrderList";
 
 import { Genre } from "./hooks/useGenre";
 import { Platform } from "./hooks/usePlatforms";
-import OrderList from "./componets/OrderList";
+import GameHeadding from "./componets/GameHeadding";
+
+export interface GameQuery {
+  genre: Genre | null;
+  platfrom: Platform | null;
+  order: string | null;
+  searchValue: string;
+}
 
 const App = () => {
-  const [selectedGenre, setSelectedGenre] = useState<null | Genre>(null);
-  const [selectedPlatform, setSelectedPlatform] = useState<null | Platform>(
-    null
-  );
-  const [selectedOrder, setSelectedOrder] = useState<null | string>(null);
-  const [searchedValue, setSearched] = useState<string>('');
+
+  const [gameQuery , setGameQuery] = useState<GameQuery>({}as GameQuery)
+
   return (
     <Grid
-      templateAreas={{
-        base: `"nav" "main"`,
-        lg: `"nav nav" "aside main" `,
-      }}
-      templateColumns={{
-        base: "1fr",
-        lg: "260px 1fr",
-      }}
+      templateAreas={{ base: `"nav" "main"`, lg: `"nav nav" "aside main" `,}}
+      templateColumns={{ base: "1fr",  lg: "260px 1fr", }}
     >
       <GridItem area="nav">
-        <Navbar  searchValue={(e)=>setSearched(e)}/>
+        <Navbar searchValue={(searchValue) =>setGameQuery({...gameQuery,searchValue})} />
       </GridItem>
+
       <Show above="lg">
         <GridItem area="aside" paddingTop={8}>
-          <GenreList genre={(selected) => setSelectedGenre(selected)} />
+          <GenreList genre={(genre) => setGameQuery({...gameQuery,genre})} />
         </GridItem>
       </Show>
-      <GridItem area="main" paddingX={8}>
-        <HStack paddingTop={8} >
-          <PlatformsList platform={(p) => setSelectedPlatform(p)} />
 
-          <OrderList onSelect={(o) => setSelectedOrder(o)} />
+      <GridItem area="main" paddingX={8}>
+        <GameHeadding gameQuery={gameQuery} ></GameHeadding>
+        <HStack paddingTop={8}>
+          <PlatformsList platform={(platfrom)=>setGameQuery({...gameQuery,platfrom})} />
+          <OrderList onSelect={(order) =>setGameQuery({...gameQuery,order})} />
         </HStack>
-        <GameGrid
-          selectedGenre={selectedGenre}
-          selectedPlatform={selectedPlatform}
-          selectedOrder={selectedOrder}
-          searchedValue={searchedValue}
-        />
+        <GameGrid gameQuery={gameQuery}/>
       </GridItem>
     </Grid>
   );

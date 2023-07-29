@@ -8,9 +8,11 @@ interface schema<T> {
 }
 
 const useData = <T>(endpoint: string ) => {
+
   const [data, setData] = useState<T[]>([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
@@ -29,6 +31,8 @@ const useData = <T>(endpoint: string ) => {
       });
     return () => controller.abort();
   },[endpoint]);
+
   return { data, err, loading };
 };
+
 export default useData;

@@ -13,7 +13,7 @@ interface Props {
 const Searchbar = ({ searchValue }: Props) => {
   const ref = useRef<HTMLInputElement>(null);
   return (
-    <InputGroup>
+    <InputGroup >
       <InputLeftElement pointerEvents="none">
         <IconButton
           as={FaSearch}
@@ -22,14 +22,17 @@ const Searchbar = ({ searchValue }: Props) => {
           background={"none"}
         />
       </InputLeftElement>
+    
       <Input
+        variant={'filled'}
         ref={ref}
         type="text"
         placeholder="Search"
         borderRadius="full"
-        _placeholder={{ color: "gray.500" }}
+        width={'full'}       
         onInput={()=>searchValue(ref.current!.value.toString())}
       />
+
     </InputGroup>
   );
 };
