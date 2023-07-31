@@ -14,8 +14,8 @@ interface Props {
 }
 
 const GenreList = ({ genre }: Props) => {
-  const { data, loading } = useGenre();
-  if (loading) return <Spinner padding={20} />;
+  const { data, isLoading} = useGenre();
+  if (isLoading) return <Spinner padding={20} />;
   return (
     <List spacing={3} paddingLeft={8}>
       <ListItem display={"flex"} alignItems={"center"}>
@@ -35,7 +35,7 @@ const GenreList = ({ genre }: Props) => {
           All
         </Button>
       </ListItem>
-      {data.map((genreItem) => (
+      {data?.results.map((genreItem) => (
         <ListItem key={genreItem.id} display={"flex"} alignItems={"center"}>
           <Image
             marginRight={2}

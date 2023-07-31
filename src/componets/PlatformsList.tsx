@@ -25,7 +25,7 @@ const PlatformsList = ({ platform }: Props) => {
           
           All
         </MenuItem>
-        {data.map((p) => (
+        {data?.results.map((p) => (
           <MenuItem
             onClick={() => {
               setTitle(p.name);

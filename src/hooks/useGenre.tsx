@@ -1,6 +1,8 @@
 
-import useData from "./useDate";
+import { useQuery } from "@tanstack/react-query";
 
+import apiClient from "../services/api-client";
+import { schema } from "../services/api-client";
 export interface Genre {
   id: number;
   name: string;
@@ -11,6 +13,9 @@ export interface Genre {
 
 const useGenre = () => {
 
- return useData<Genre>('/genres')
+ return useQuery({
+  queryKey : ["genres"],
+  queryFn : ()=> apiClient.get<schema<Genre>>('/genres').then(res=>res.data)
+ })
 };
 export default useGenre;

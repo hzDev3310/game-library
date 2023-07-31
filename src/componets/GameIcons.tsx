@@ -32,7 +32,7 @@ export default function GameIcons({ platforms }: Props) {
   return (
     <>
       <HStack spacing={2} marginY={1}>
-        {platforms.map((p) => (
+        {platforms?.map((p) => (
           <Icon key={p.id} as={icons[p.slug]} color={"gray.500"} />
         ))}
       </HStack>

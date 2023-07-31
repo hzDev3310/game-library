@@ -30,7 +30,13 @@ const Searchbar = ({ searchValue }: Props) => {
         placeholder="Search"
         borderRadius="full"
         width={'full'}       
-        onInput={()=>searchValue(ref.current!.value.toString())}
+        onInput={()=>{
+          try {
+            searchValue(ref.current!.value.toString())
+          } catch (error) {
+            console.log('err')
+          }
+        }}
       />
 
     </InputGroup>

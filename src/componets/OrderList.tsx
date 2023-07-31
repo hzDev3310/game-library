@@ -8,14 +8,13 @@ interface Props {
 const OrderList = ({ onSelect }: Props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const menuOptions = [
-    { value: null, label: "Default" },
+    { value: '', label: "Default" },
     { value: "name", label: "Name" },
-    { value: "released", label: "Released" },
-    { value: "added", label: "Added" },
+    { value: "-released", label: "Released" },
+    { value: "-added", label: "Added" },
     { value: "created", label: "Created" },
-    { value: "updated", label: "Updated" },
     { value: "rating", label: "Rating" },
-    { value: "metacritic", label: "Metacritic" },
+    { value: "-metacritic", label: "Metacritic" },
   ];
   return (
     <Menu>
